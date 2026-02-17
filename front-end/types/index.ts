@@ -5,4 +5,5 @@ export interface Partido {
   resultado: string;
   condicion: 'Local' | 'Visitante';
   goleadores: string[];
+  competicion: string;
 }
