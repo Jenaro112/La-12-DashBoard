@@ -6,4 +6,5 @@ export interface Partido {
   condicion: 'Local' | 'Visitante';
   goleadores: string[];
   competicion: string;
+  
 }

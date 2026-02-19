@@ -1,133 +1,160 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { Partido } from '@/types';
+import Link from 'next/link';
+import { motion, Variants } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { BOCA_BLUE, BOCA_GOLD } from '@/lib/constants';
 
-export default function Resultados() {
-  const [partidos, setPartidos] = useState<Partido[]>([]);
-  const [loading, setLoading] = useState(true);
+export default function Home() {
+  const [confetti, setConfetti] = useState<any[]>([]);
 
-  // Colores de Boca definidos en constantes para reutilización
-  const BOCA_BLUE = '#00305D';
-  const BOCA_GOLD = '#F3B229';
-
+  // Generamos los papelitos solo del lado del cliente
   useEffect(() => {
-    const fetchPartidos = async () => {
-      try {
-        const response = await fetch('/api/partidos');
-        if (!response.ok) {
-          throw new Error('Error al obtener los partidos');
-        }
-        const data = await response.json();
-        setPartidos(data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPartidos();
+    const newConfetti = Array.from({ length: 40 }).map((_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      width: Math.random() * 15 + 5,
+      height: Math.random() * 8 + 4,
+      backgroundColor: Math.random() > 0.5 ? BOCA_BLUE : BOCA_GOLD,
+      duration: Math.random() * 5 + 5,
+      delay: Math.random() * 5,
+      rotation: Math.random() * 360,
+    }));
+    setConfetti(newConfetti);
   }, []);
 
+  // Variantes para el texto (ya estaban ok)
+  const textContainerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.12, delayChildren: 0.5 },
+    },
+  };
+
+  const textChildVariants: Variants = {
+    visible: { opacity: 1, y: 0, transition: { type: "spring", damping: 12, stiffness: 100 } },
+    hidden: { opacity: 0, y: 20, transition: { type: "spring", damping: 12, stiffness: 100 } },
+  };
+
+  // --- NUEVAS VARIANTES PARA EL BOTÓN (La solución al problema) ---
+  const buttonVariants: Variants = {
+    hidden: { y: 50, opacity: 0 },
+    visible: { 
+      y: 0, 
+      opacity: 1,
+      // Esta transición lenta con delay es SOLO para la entrada inicial
+      transition: { delay: 1, type: "spring", stiffness: 200, damping: 20 }
+    },
+    hover: { 
+        scale: 1.05, 
+        backgroundColor: BOCA_GOLD, 
+        color: BOCA_BLUE,
+        borderColor: BOCA_GOLD,
+        boxShadow: `0 0 50px ${BOCA_GOLD}, 0 0 20px ${BOCA_GOLD} inset`,
+        // Esta transición rápida es SOLO para el hover (entra y sale rápido)
+        transition: { type: "spring", stiffness: 400, damping: 10, delay: 0 }
+    },
+    tap: { scale: 0.95 }
+  };
+
+
   return (
-    <main className="min-h-screen bg-gray-50 font-sans text-gray-900">
-      {/* Hero Section */}
-      <div 
-        className="w-full py-16 shadow-lg"
-        style={{ backgroundColor: BOCA_BLUE, color: BOCA_GOLD }}
+    <main 
+      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden p-8 text-center font-sans"
+      style={{ background: `radial-gradient(circle at center, #002F6C 0%, #001A3D 100%)` }}
+    >
+      
+      {/* --- FONDO: Lluvia de Papelitos --- */}
+      <div className="pointer-events-none absolute inset-0 z-0">
+        {confetti.map((c) => (
+          <motion.div
+            key={c.id}
+            className="absolute rounded-sm opacity-70"
+            style={{ 
+              backgroundColor: c.backgroundColor, 
+              left: `${c.x}%`, 
+              top: `-10%`, 
+              width: c.width,
+              height: c.height,
+              rotateZ: c.rotation
+            }}
+            animate={{
+              y: ['0vh', '110vh'],
+              rotateZ: [c.rotation, c.rotation + 360 + Math.random() * 360],
+              rotateX: [0, Math.random() * 360],
+            }}
+            transition={{ duration: c.duration, delay: c.delay, repeat: Infinity, ease: "linear" }}
+          />
+        ))}
+         <div className="absolute inset-0 bg-blue-900/20 mix-blend-overlay"></div>
+      </div>
+
+      {/* --- EL ESCUDO CENTRAL --- */}
+      <motion.div 
+        className="relative z-20 mb-10"
+        initial={{ scale: 0, opacity: 0, y: 50 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        transition={{ type: "spring", stiffness: 200, damping: 20, duration: 1 }}
       >
-        <div className="container mx-auto px-4 text-center">
+        <motion.div
+           className="rounded-[40px] border-4 p-12"
+           style={{ backgroundColor: BOCA_BLUE, borderColor: BOCA_GOLD }}
+           animate={{
+             boxShadow: [`0 0 20px ${BOCA_GOLD}60`, `0 0 60px ${BOCA_GOLD}90`, `0 0 20px ${BOCA_GOLD}60`],
+             scale: [1, 1.03, 1]
+           }}
+           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        >
           <h1 
-            className="mb-2 text-5xl font-black uppercase tracking-tight md:text-6xl"
+            className="text-7xl font-black uppercase tracking-tighter drop-shadow-[0_5px_5px_rgba(0,0,0,0.5)] md:text-9xl"
             style={{ color: BOCA_GOLD }}
           >
-            Boca Juniors
+            La 12
           </h1>
-          <p className="text-lg font-medium text-blue-100 opacity-90">
-            Resultados y Estadísticas de la Temporada
-          </p>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
+      
+      {/* --- TEXTO ANIMADO POR PALABRAS --- */}
+      <motion.div
+        className="relative z-20 mb-14 overflow-hidden"
+        variants={textContainerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        {["Bienvenido", "a", "la", "pasión", "del", "pueblo"].map((word, index) => (
+          <motion.span
+            key={index}
+            variants={textChildVariants}
+            className="mx-1 inline-block text-3xl font-bold text-white md:text-4xl"
+            style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}
+          >
+            {word === "pasión" ? <span style={{color: BOCA_GOLD}}>{word}</span> : word}
+          </motion.span>
+        ))}
+      </motion.div>
 
-      {/* Contenido */}
-      <div className="container mx-auto px-4 py-12">
-        {loading ? (
-          <div className="flex h-64 items-center justify-center">
-            <div 
-              className="h-12 w-12 animate-spin rounded-full border-4 border-t-transparent" 
-              style={{ borderColor: BOCA_GOLD, borderTopColor: 'transparent' }}
-            ></div>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {partidos.map((partido) => (
-              <div
-                key={partido.id}
-                className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-              >
-                {/* Cabecera de la tarjeta: Competición y Condición */}
-                <div className="flex items-center justify-between bg-gray-100 px-5 py-3 text-xs font-bold uppercase tracking-wider text-gray-500">
-                  <span className="truncate pr-2">{partido.competicion}</span>
-                  <span 
-                    className={`rounded px-2 py-0.5 text-[10px] font-bold text-white ${
-                      partido.condicion === 'Local' ? 'bg-blue-600' : 'bg-gray-500'
-                    }`}
-                  >
-                    {partido.condicion}
-                  </span>
-                </div>
-
-                {/* Cuerpo del partido */}
-                <div className="flex flex-col items-center p-6">
-                  <div className="mb-3 text-sm font-semibold text-gray-400">
-                    {partido.fecha}
-                  </div>
-                  
-                  <div className="mb-6 flex w-full items-center justify-between">
-                    <div className="flex flex-1 flex-col items-center">
-                      <span className="text-xl font-bold text-gray-800">Boca</span>
-                    </div>
-                    
-                    <div 
-                      className="mx-2 flex h-14 w-20 items-center justify-center rounded-lg text-2xl font-black tracking-widest shadow-inner"
-                      style={{ backgroundColor: '#f1f5f9', color: BOCA_BLUE }}
-                    >
-                      {partido.resultado}
-                    </div>
-                    
-                    <div className="flex flex-1 flex-col items-center text-center">
-                      <span className="text-xl font-bold text-gray-800">{partido.rival}</span>
-                    </div>
-                  </div>
-
-                  {/* Goleadores */}
-                  <div className="w-full">
-                    {partido.goleadores.length > 0 ? (
-                      <div className="flex flex-wrap justify-center gap-1.5">
-                        {partido.goleadores.map((jugador, index) => (
-                          <span
-                            key={index}
-                            className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold"
-                            style={{ backgroundColor: 'rgba(243, 178, 41, 0.15)', color: '#9a6b00' }}
-                          >
-                            ⚽ {jugador}
-                          </span>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="h-5 text-center text-xs italic text-gray-300">Sin goles</div>
-                    )}
-                  </div>
-                </div>
-                
-                {/* Decoración inferior */}
-                <div className="h-1.5 w-full" style={{ background: `linear-gradient(90deg, ${BOCA_BLUE} 50%, ${BOCA_GOLD} 50%)` }}></div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      {/* --- BOTÓN FINAL (Ahora usa variants para ser rápido) --- */}
+      <Link href="/resultados" className="relative z-20 inline-block">
+        <motion.div
+            className="cursor-pointer overflow-hidden rounded-xl border-2 px-12 py-5 text-2xl font-black uppercase tracking-widest"
+            // Estilos base iniciales
+            style={{ 
+                backgroundColor: BOCA_BLUE, 
+                color: BOCA_GOLD,
+                borderColor: BOCA_GOLD,
+                boxShadow: `0 10px 30px -10px ${BOCA_BLUE}`
+            }}
+            // Conectamos las variantes que definimos arriba
+            variants={buttonVariants}
+            initial="hidden"
+            animate="visible"
+            whileHover="hover"
+            whileTap="tap"
+        >
+          Ver Resultados
+        </motion.div>
+      </Link>
     </main>
   );
 }
