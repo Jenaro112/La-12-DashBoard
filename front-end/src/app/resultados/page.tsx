@@ -4,14 +4,12 @@ import { useEffect, useState } from 'react';
 import { Partido } from '@/types';
 import { motion, Variants, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { BOCA_BLUE, BOCA_GOLD } from '@/lib/constants';
 
 export default function Resultados() {
   const [partidos, setPartidos] = useState<Partido[]>([]);
   const [loading, setLoading] = useState(true);
   const [filtro, setFiltro] = useState<'Todos' | 'Local' | 'Visitante'>('Todos');
-
-  const BOCA_BLUE = '#00305D';
-  const BOCA_GOLD = '#F3B229';
 
   useEffect(() => {
     const fetchPartidos = async () => {
