@@ -23,7 +23,7 @@ export default function Home() {
     setConfetti(newConfetti);
   }, []);
 
-  // Variantes para el texto (ya estaban ok)
+  // Variantes para el texto
   const textContainerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -37,13 +37,12 @@ export default function Home() {
     hidden: { opacity: 0, y: 20, transition: { type: "spring", damping: 12, stiffness: 100 } },
   };
 
-  // --- NUEVAS VARIANTES PARA EL BOTÓN (La solución al problema) ---
+  // --- VARIANTES PARA LOS BOTONES ---
   const buttonVariants: Variants = {
     hidden: { y: 50, opacity: 0 },
     visible: { 
       y: 0, 
       opacity: 1,
-      // Esta transición lenta con delay es SOLO para la entrada inicial
       transition: { delay: 1, type: "spring", stiffness: 200, damping: 20 }
     },
     hover: { 
@@ -52,12 +51,10 @@ export default function Home() {
         color: BOCA_BLUE,
         borderColor: BOCA_GOLD,
         boxShadow: `0 0 50px ${BOCA_GOLD}, 0 0 20px ${BOCA_GOLD} inset`,
-        // Esta transición rápida es SOLO para el hover (entra y sale rápido)
         transition: { type: "spring", stiffness: 400, damping: 10, delay: 0 }
     },
     tap: { scale: 0.95 }
   };
-
 
   return (
     <main 
@@ -134,27 +131,51 @@ export default function Home() {
         ))}
       </motion.div>
 
-      {/* --- BOTÓN FINAL (Ahora usa variants para ser rápido) --- */}
-      <Link href="/resultados" className="relative z-20 inline-block">
-        <motion.div
-            className="cursor-pointer overflow-hidden rounded-xl border-2 px-12 py-5 text-2xl font-black uppercase tracking-widest"
-            // Estilos base iniciales
-            style={{ 
-                backgroundColor: BOCA_BLUE, 
-                color: BOCA_GOLD,
-                borderColor: BOCA_GOLD,
-                boxShadow: `0 10px 30px -10px ${BOCA_BLUE}`
-            }}
-            // Conectamos las variantes que definimos arriba
-            variants={buttonVariants}
-            initial="hidden"
-            animate="visible"
-            whileHover="hover"
-            whileTap="tap"
-        >
-          Ver Resultados
-        </motion.div>
-      </Link>
+      {/* --- BOTONES FINALES --- */}
+      <div className="relative z-20 flex flex-col items-center justify-center gap-6 sm:flex-row">
+        
+        {/* Botón 1: Resultados */}
+        <Link href="/resultados" className="inline-block">
+          <motion.div
+              className="cursor-pointer overflow-hidden rounded-xl border-2 px-10 py-4 text-xl font-black uppercase tracking-widest md:px-12 md:py-5 md:text-2xl"
+              style={{ 
+                  backgroundColor: BOCA_BLUE, 
+                  color: BOCA_GOLD,
+                  borderColor: BOCA_GOLD,
+                  boxShadow: `0 10px 30px -10px ${BOCA_BLUE}`
+              }}
+              variants={buttonVariants}
+              initial="hidden"
+              animate="visible"
+              whileHover="hover"
+              whileTap="tap"
+          >
+            Resultados
+          </motion.div>
+        </Link>
+
+        {/* Botón 2: Sala de Trofeos (Historia) */}
+        <Link href="/historia" className="inline-block">
+          <motion.div
+              className="cursor-pointer overflow-hidden rounded-xl border-2 px-10 py-4 text-xl font-black uppercase tracking-widest md:px-12 md:py-5 md:text-2xl"
+              style={{ 
+                  backgroundColor: '#001A3D', // Un azul apenas más oscuro para diferenciarlo sutilmente
+                  color: BOCA_GOLD,
+                  borderColor: BOCA_GOLD,
+                  boxShadow: `0 10px 30px -10px ${BOCA_BLUE}`
+              }}
+              variants={buttonVariants}
+              initial="hidden"
+              animate="visible"
+              whileHover="hover"
+              whileTap="tap"
+          >
+            Sala de Trofeos
+          </motion.div>
+        </Link>
+
+      </div>
+
     </main>
   );
 }
