@@ -6,12 +6,18 @@ export async function GET() {
     {
       id: '1',
       rival: 'Millonarios',
+      escudoRival:'/escudos/Internacionales/millonarios.png',
       fecha: '2026-01-14',
       resultado: '0-0',
       estado: 'Empate',
       condicion: 'Local',
       goleadores: [],
       competicion: 'Amistoso',
+      formacion: {
+        esquema: "4-3-3",
+        titulares: ['marchesin', 'blanco', 'costa', 'di_lollo', 'barinaga', 'delgado', 'paredes', 'ander', 'zeballos', 'merentiel', 'aguirre'],
+        suplentes: []
+      },
       estadisticas: {
         TotalRematesBoca: 17,
         TotalRematesRival: 4,
@@ -38,12 +44,18 @@ export async function GET() {
     {
       id: '2',
       rival: 'Olimpia',
+      escudoRival:'/escudos/Internacionales/olimpia.png',
       fecha: '2026-01-18',
       resultado: '2-1',
       estado: 'Victoria',
       condicion: 'Local',
       goleadores: ['Velasco', 'Belmonte'],
       competicion: 'Amistoso',
+      formacion: {
+        esquema: "4-3-3",
+        titulares: ['marchesin', 'braida', 'costa', 'di_lollo', 'barinaga', 'belmonte', 'paredes', 'ander', 'zeballos', 'merentiel', 'velasco'],
+        suplentes: []
+      },
       estadisticas: {
         TotalRematesBoca: 12,
         TotalRematesRival: 12,
@@ -70,12 +82,18 @@ export async function GET() {
     {
       id: '3',
       rival: 'Dep. Riestra',
+      escudoRival: '/escudos/Argentinos/riestra.png',
       fecha: '2026-01-25',
       resultado: '1-0',
       estado: 'Victoria',
       condicion: 'Local',
       goleadores: ['Di Lollo'],
       competicion: 'Liga Profesional de Futbol',
+      formacion: {
+        esquema: "4-3-3",
+        titulares: ['marchesin', 'blanco', 'costa', 'di_lollo', 'barinaga', 'belmonte', 'paredes', 'ander', 'zeballos', 'janson', 'velasco'],
+        suplentes: []
+      },
       estadisticas: {
         TotalRematesBoca: 19,
         TotalRematesRival: 6,
@@ -101,13 +119,19 @@ export async function GET() {
     },
     {
       id: '4',
-      rival: 'Estudiantes dLP',
+      rival: 'Estudiantes de La Plata',
+      escudoRival: '/escudos/Argentinos/estudiantes.png',
       fecha: '2026-01-28',
       resultado: '2-1',
       estado: 'Derrota',
       condicion: 'Visitante',
       goleadores: ['Zeballos'],
       competicion: 'Liga Profesional de Futbol',
+      formacion: {
+        esquema: "4-3-3",
+        titulares: ['marchesin', 'blanco', 'costa', 'di_lollo', 'barinaga', 'alarcon', 'paredes', 'belmonte', 'zeballos', 'zufiaurre', 'zenon'],
+        suplentes: []
+      },
       estadisticas: {
         TotalRematesBoca: 12,
         TotalRematesRival: 10,
@@ -134,12 +158,18 @@ export async function GET() {
     {
       id: '5',
       rival: 'Newell\'s Old Boys',
+      escudoRival: '/escudos/Argentinos/newells.png',
       fecha: '2026-02-01',
       resultado: '2-0',
       estado: 'Victoria',
       condicion: 'Local',
       goleadores: ['Blanco', 'Paredes (p)'],
       competicion: 'Liga Profesional de Futbol',
+      formacion: {
+        esquema: "4-3-3",
+        titulares: ['marchesin', 'blanco', 'costa', 'di_lollo', 'barinaga', 'ander', 'paredes', 'ascacibar', 'zeballos', 'zufiaurre', 'gelini'],
+        suplentes: []
+      },
       estadisticas: {
         TotalRematesBoca: 8,
         TotalRematesRival: 6,
@@ -166,12 +196,18 @@ export async function GET() {
     {
       id: '6',
       rival: 'Vélez Sarsfield',
+      escudoRival: '/escudos/Argentinos/velez.png',
       fecha: '2026-02-08',
       resultado: '2-1',
       estado: 'Derrota',
       condicion: 'Visitante',
       goleadores: ['Zufiaurre'],
       competicion: 'Liga Profesional de Futbol',
+      formacion: {
+        esquema: "4-3-3",
+        titulares: ['marchesin', 'blanco', 'costa', 'di_lollo', 'barinaga', 'paredes', 'delgado', 'ascacibar', 'zenon', 'merentiel', 'gelini'],
+        suplentes: []
+      },
       estadisticas: {
         TotalRematesBoca: 15,
         TotalRematesRival: 9,
@@ -198,12 +234,18 @@ export async function GET() {
     {
       id: '7',
       rival: 'Platense',
+      escudoRival: '/escudos/Argentinos/platense.png',
       fecha: '2026-02-15',
       resultado: '0-0',
       estado: 'Empate',
       condicion: 'Local',
       goleadores: [],
       competicion: 'Liga Profesional de Futbol',
+      formacion: {
+        esquema: "4-3-3",
+        titulares: ['marchesin', 'blanco', 'costa', 'di_lollo', 'barinaga', 'alarcon', 'paredes', 'ascacibar', 'janson', 'merentiel', 'romero'],
+        suplentes: []
+      },
       estadisticas: {
         TotalRematesBoca: 10,
         TotalRematesRival: 14,

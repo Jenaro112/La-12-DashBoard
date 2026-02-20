@@ -22,14 +22,15 @@ export interface Estadisticas {
 }
 
 export interface Formacion {
-  esquema: string; 
-  titulares: string[]; 
+  esquema: string; // Ej: "4-4-2"
+  titulares: string[]; // Acá solo vas a guardar los IDs: ['romero', 'advincula', ...]
   suplentes: string[];
 }
 
 export interface Partido {
   id: string;
   rival: string;
+  escudoRival: string;
   fecha: string;
   resultado: string;
   condicion: 'Local' | 'Visitante';
